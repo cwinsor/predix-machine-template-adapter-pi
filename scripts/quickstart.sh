@@ -78,12 +78,12 @@ arguments="$*"
 echo "Arguments $arguments"
 echo "$CURRENT_DIR"
 
-#rm -rf predix-scripts
+rm -rf predix-scripts
 rm -rf predix-machine-templates
 
 getRepoURL "predix-scripts" predix_scripts_url
 getRepoVersion "predix-scripts" predix_scripts_version
-#__echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
+__echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
 
 __print_center "Creating Cloud Services" "#"
 
