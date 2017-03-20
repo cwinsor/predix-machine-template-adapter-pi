@@ -14,13 +14,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
-import org.iot.raspberry.grovepi.GroveDigitalIn;
+import org.iot.raspberry.grovepi.GroveAnalogIn;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.devices.GroveLed;
 import org.iot.raspberry.grovepi.devices.GroveLightSensor;
-import org.iot.raspberry.grovepi.devices.GroveRotarySensor;
 import org.iot.raspberry.grovepi.devices.GroveSoundSensor;
-import org.iot.raspberry.grovepi.devices.GroveTemperatureAndHumiditySensor;
 import org.iot.raspberry.grovepi.pi4j.GrovePi4J;
 
 import com.ge.dspmicro.machinegateway.types.PDataNode;
@@ -34,13 +32,9 @@ public class WorkshopDataNodePI extends PDataNode
 {
 	private GroveLightSensor lightNode;
 	
-	private GroveRotarySensor rotaryNode;
-	
-	private GroveTemperatureAndHumiditySensor tempNode;
+	private GroveAnalogIn tempNode;
 	
 	private GroveSoundSensor soundNode;
-	
-	private GroveDigitalIn buttonNode;
 	
 	private GroveDigitalOut buzzerNode;
 	
@@ -63,18 +57,10 @@ public class WorkshopDataNodePI extends PDataNode
 				this.lightNode = new GroveLightSensor(pi, nodePin);
 				break;
 			case "Temperature": //$NON-NLS-1$
-				this.tempNode = new GroveTemperatureAndHumiditySensor(pi, nodePin, GroveTemperatureAndHumiditySensor.Type.DHT11);
+				this.tempNode = new GroveAnalogIn(pi, nodePin, 1);
 				break;
 			case "Sound": //$NON-NLS-1$
 				this.soundNode = new GroveSoundSensor(pi, nodePin);
-				break;
-			case "RotaryAngle": //$NON-NLS-1$
-				this.rotaryNode = new GroveRotarySensor(pi,nodePin);
-				this.ledNode = new GroveLed(new GrovePi4J(),3);
-				break;
-			case "Button": //$NON-NLS-1$
-				this.buttonNode = new GroveDigitalIn(pi, nodePin);
-				this.buzzerNode = new GroveDigitalOut(pi, 5);	
 				break;
 			default:
 				break;
@@ -132,43 +118,15 @@ public class WorkshopDataNodePI extends PDataNode
 	/**
 	 * @return -
 	 */
-	public GroveRotarySensor getRotaryNode() {
-		return this.rotaryNode;
-	}
-
-	/**
-	 * @param rotaryNode -
-	 */
-	public void setRotaryNode(GroveRotarySensor rotaryNode) {
-		this.rotaryNode = rotaryNode;
-	}
-
-	/**
-	 * @return -
-	 */
-	public GroveTemperatureAndHumiditySensor getTempNode() {
+	public GroveAnalogIn getTempNode() {
 		return this.tempNode;
 	}
 
 	/**
 	 * @param tempNode -
 	 */
-	public void setTempNode(GroveTemperatureAndHumiditySensor tempNode) {
+	public void setTempNode(GroveAnalogIn tempNode) {
 		this.tempNode = tempNode;
-	}
-
-	/**
-	 * @return -
-	 */
-	public GroveDigitalIn getButtonNode() {
-		return this.buttonNode;
-	}
-
-	/**
-	 * @param buttonNode -
-	 */
-	public void setButtonNode(GroveDigitalIn buttonNode) {
-		this.buttonNode = buttonNode;
 	}
 
 	/**

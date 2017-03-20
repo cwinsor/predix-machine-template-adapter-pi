@@ -5,18 +5,13 @@
      "nodePin": 1
    },
    {  
-      "nodeName": "RotaryAngle:TAE",  
-      "nodeType": "RotaryAngle",  
+      "nodeName": "Sound:TAE",  
+      "nodeType": "Sound",  
       "nodePin": 2
    },
    {  
       "nodeName": "Temperature:TAE",  
       "nodeType": "Temperature",  
       "nodePin": 0
-   },
-   {  
-      "nodeName": "Button:TAE",  
-      "nodeType": "Button",  
-      "nodePin": 2
    }
 ]

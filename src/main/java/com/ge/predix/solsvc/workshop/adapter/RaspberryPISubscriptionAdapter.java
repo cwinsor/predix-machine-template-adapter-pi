@@ -12,6 +12,7 @@ package com.ge.predix.solsvc.workshop.adapter;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,9 +24,9 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import org.iot.raspberry.grovepi.devices.GroveLed;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -306,27 +307,20 @@ public class RaspberryPISubscriptionAdapter
 					fvalue = node.getLightNode().get();
 				break;
 				case "Temperature": //$NON-NLS-1$
-					fvalue = node.getTempNode().get().getTemperature();
+					byte[] tmp = node.getTempNode().get();
+					fvalue = ByteBuffer.wrap(tmp).getDouble();
+					System.out.printf("zona temperature sensor returned %x %x %x %x\n", //$NON-NLS-1$
+							tmp[3], tmp[2], tmp[1], tmp[0]);
+					System.out.printf("zona temperature which converted to double %f\n", fvalue); //$NON-NLS-1$
 					break;
 				case "Sound": //$NON-NLS-1$
-					fvalue = node.getSoundNode().get();
-					break;
-				case "RotaryAngle": //$NON-NLS-1$
-					double sensorValue = node.getRotaryNode().get().getSensorValue();
-					double calculatedValue = Math.round((sensorValue) * ADC_REF / 1023);
-					
-					fvalue = new Double(df.format(calculatedValue));
-					GroveLed ledPin = node.getLedNode();
-					if (calculatedValue > 3.0) {
-						ledPin.set(true);
-					}else {
-						ledPin.set(false);
+					SummaryStatistics ss = new SummaryStatistics();
+					for (int i = 0; i < 50; i++) {
+						double snd = node.getSoundNode().get();
+						ss.addValue(snd);
 					}
-					break;
-				case "Button": //$NON-NLS-1$
-					boolean value = node.getButtonNode().get();
-					fvalue = value ? 1.0 : 0.0;
-					node.getBuzzerNode().set(value);
+					System.out.printf("zona sound returned avg %f std %f\n", ss.getMean(), ss.getStandardDeviation());
+					fvalue = ss.getMean();
 					break;
 				default:
 					break;
