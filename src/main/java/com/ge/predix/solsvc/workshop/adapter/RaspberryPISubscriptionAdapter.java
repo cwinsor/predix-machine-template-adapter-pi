@@ -12,7 +12,6 @@ package com.ge.predix.solsvc.workshop.adapter;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +23,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.apache.commons.math3.stat.descriptive.SummaryStatistics;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.osgi.service.component.ComponentContext;
@@ -307,34 +305,28 @@ public class RaspberryPISubscriptionAdapter
 					fvalue = node.getLightNode().get();
 				break;
 				case "Temperature": //$NON-NLS-1$
-					byte[] tmp = node.getTempNode().get();
-					fvalue = ByteBuffer.wrap(tmp).getDouble();
-					System.out.printf("zona temperature sensor returned %x %x %x %x\n", //$NON-NLS-1$
-							tmp[3], tmp[2], tmp[1], tmp[0]);
-					System.out.printf("zona temperature which converted to double %f\n", fvalue); //$NON-NLS-1$
+					fvalue = node.getTempNode().get();
 					break;
 				case "Sound": //$NON-NLS-1$
-					SummaryStatistics ss = new SummaryStatistics();
-					for (int i = 0; i < 50; i++) {
-						double snd = node.getSoundNode().get();
-						ss.addValue(snd);
-					}
-					System.out.printf("zona sound returned avg %f std %f\n", ss.getMean(), ss.getStandardDeviation());
-					fvalue = ss.getMean();
+					fvalue = node.getSoundNode().get();
 					break;
 				default:
 					break;
 				}
+				break;
 			} catch (Exception e) {
-				if (try_num < 3) {
-					String msg = String.format("Exception when reading data from sensor node (will retry)\n%s", //$NON-NLS-1$
-							e.toString());
-					_logger.error(msg);
-				} else {
-					throw new RuntimeException("Exception when reading data from the sensor node", e); //$NON-NLS-1$
+				System.out.printf("Exception when reading data from sensor node"); //$NON-NLS-1$
+				System.out.println(e.getMessage());
+				System.out.printf("(will retry)\n");
+				System.out.printf("%d\n", try_num);
+				System.out.printf("-----\n");
+				System.out.printf("%s\n", node.getNodeType());
+				System.out.printf("-----\n");
+
+				if (try_num >= 3) {
+					throw new RuntimeException("Exception when reading data from the sensor node %s", e); //$NON-NLS-1$
 				}
 			}
-			break;
 		}
     	
         PEnvelope envelope = new PEnvelope(fvalue);
