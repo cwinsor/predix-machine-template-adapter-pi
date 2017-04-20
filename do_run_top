@@ -20,9 +20,11 @@ function __print_out_usage
 
 	echo -e "\n*** examples ***"
 	echo -e "./do_run_top --help"
-	echo -e "./do_run_top -i cwinsor-111 --skip-services --install-frontend"
-	echo -e "./do_run_top -i cwinsor-111 --skip-services"
-	echo -e "./do_run_top -i cwinsor-111 --skip-services --training-uaa no --wind-data no --delete-services no --create-services no --machine-config no --clean-compile no --machine-transfer no --install-frontend yes --create-machine no"
+	echo -e "(all)                     ./do_run_top -i cwinsor-111 --create-services --machine-config --install-frontend"
+	echo -e "(just the front-end apps) ./do_run_top -i cwinsor-111 --install-frontend"
+	echo -e "(broken)            ./do_run_top -i cwinsor-111 --create-services --machine-config --install-frontend -v -v -v --print-vcaps --clean-compile"
+	echo -e "./do_run_top -i cwinsor-111 -v -v -v --print-vcaps --clean-compile --machine-config"
+	echo -e "./do_run_top -i cwinsor-111 -v -v -v --print-vcaps --clean-compile --install-frontend"
 	echo -e "\n"
 }
 
@@ -60,7 +62,7 @@ if [[ ($RUN_PRINT_HELP == 1) ]]; then
 fi
 
 #cd predix-machine-template-adapter-pi
-#./quickstart.sh $arguments 2>&1 | tee log_$DATE_TIME.log
-./scripts/quickstart.sh $arguments 2>&1 | tee log.log
+./scripts/quickstart.sh $arguments 2>&1 | tee log.log | tee log_$DATE_TIME.log
+
 
 cd $CURRENT_DIR

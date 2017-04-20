@@ -98,11 +98,12 @@ find . -name "*.sh" -exec dos2unix -q {} \;
 fi
 
 #Run the quickstart
-if [[ $SKIP_SERVICES -eq 0 ]]; then
-__echo_run ./quickstart.sh -cs -mc -if $arguments
-else
-__echo_run ./quickstart.sh -mc -p $arguments
-fi
+#if [[ $SKIP_SERVICES -eq 0 ]]; then
+#__echo_run ./quickstart.sh -cs -mc -if $arguments
+#else
+#__echo_run ./quickstart.sh -mc -p $arguments
+#fi
+__echo_run ./quickstart.sh $arguments
 
 source ./scripts/variables.sh
 
