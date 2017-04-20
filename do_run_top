@@ -1,0 +1,66 @@
+#!/bin/bash
+set -e
+trap "trap_ctrlc" 2
+
+arguments="$*"
+echo "arguments : $arguments"
+
+CURRENT_DIR="`pwd`"
+DATE_TIME=`date +%F_%T`
+
+######################################################################
+function __print_out_usage
+{
+	echo -e "Usage:\n"
+	echo -e "./do_run_top [ options ]\n"
+
+  echo -e "options are"
+  echo "[-h|--help]                           => Print usage"
+  echo "[--foo]                               => foo mode"
+
+	echo -e "\n*** examples ***"
+	echo -e "./do_run_top --help"
+	echo -e "./do_run_top -i cwinsor-111 --skip-services --install-frontend"
+	echo -e "./do_run_top -i cwinsor-111 --skip-services"
+	echo -e "./do_run_top -i cwinsor-111 --skip-services --training-uaa no --wind-data no --delete-services no --create-services no --machine-config no --clean-compile no --machine-transfer no --install-frontend yes --create-machine no"
+	echo -e "\n"
+}
+
+######################################################################
+while :; do
+    case $1 in
+        -h|-\?|--help)   # display a synopsis
+        RUN_PRINT_HELP=1
+	;;
+
+	-f|--foo)
+	 RUN_FOO=1
+        ;;
+
+	-b|--bar)
+	 RUN_BAR=1
+        ;;
+
+        '') # end of options
+          break;
+        ;;
+
+        *) # unknown option
+          printf 'Unknown option (passed to lower scripts): %s\n' "$1" >&2
+        ;;
+    esac
+    shift
+done
+
+######################################################################
+echo "########################### Starting (do_run_top.sh) ###########################"
+
+if [[ ($RUN_PRINT_HELP == 1) ]]; then
+   __print_out_usage
+fi
+
+#cd predix-machine-template-adapter-pi
+#./quickstart.sh $arguments 2>&1 | tee log_$DATE_TIME.log
+./scripts/quickstart.sh $arguments 2>&1 | tee log.log
+
+cd $CURRENT_DIR
