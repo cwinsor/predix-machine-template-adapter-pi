@@ -108,28 +108,28 @@ fi
 #fi
 __echo_run ./quickstart.sh $arguments
 
-source ./scripts/variables.sh
-
-echo "MACHINE_VERSION : $MACHINE_VERSION"
-echo "PREDIX_MACHINE_HOME : $PREDIX_MACHINE_HOME"
-cd "$CURRENT_DIR"
-
-__print_center "Build and setup the Predix Machine Adapter for Device" "#"
-
-__echo_run cp "$CURRENT_DIR/config/com.ge.predix.solsvc.workshop.adapter.config" "$PREDIX_MACHINE_HOME/configuration/machine"
-__echo_run cp "$CURRENT_DIR/config/com.ge.predix.workshop.nodeconfig.json" "$PREDIX_MACHINE_HOME/configuration/machine"
-__echo_run cp "$CURRENT_DIR/config/com.ge.dspmicro.hoover.spillway-0.config" "$PREDIX_MACHINE_HOME/configuration/machine"
-#__echo_run cp "$CURRENT_DIR/config/start_container.sh" "$PREDIX_MACHINE_HOME/machine/bin/predix"
-
-#Replace the :TAE tag with instance prepender
-configFile="$PREDIX_MACHINE_HOME/configuration/machine/com.ge.predix.workshop.nodeconfig.json"
-__find_and_replace ":TAE" ":$(echo $INSTANCE_PREPENDER | tr 'a-z' 'A-Z')" "$configFile" "$quickstartLogDir"
-
-if [[ $RUN_COMPILE_REPO -eq 1 ]]; then
-	./scripts/deployPiDependencies.sh	
-fi
-
 if [[ $RUN_MACHINE_CONFIG=1 ]]; then
+  source ./scripts/variables.sh
+  
+  echo "MACHINE_VERSION : $MACHINE_VERSION"
+  echo "PREDIX_MACHINE_HOME : $PREDIX_MACHINE_HOME"
+  cd "$CURRENT_DIR"
+  
+  __print_center "Build and setup the Predix Machine Adapter for Device" "#"
+  
+  __echo_run cp "$CURRENT_DIR/config/com.ge.predix.solsvc.workshop.adapter.config" "$PREDIX_MACHINE_HOME/configuration/machine"
+  __echo_run cp "$CURRENT_DIR/config/com.ge.predix.workshop.nodeconfig.json" "$PREDIX_MACHINE_HOME/configuration/machine"
+  __echo_run cp "$CURRENT_DIR/config/com.ge.dspmicro.hoover.spillway-0.config" "$PREDIX_MACHINE_HOME/configuration/machine"
+  #__echo_run cp "$CURRENT_DIR/config/start_container.sh" "$PREDIX_MACHINE_HOME/machine/bin/predix"
+
+  #Replace the :TAE tag with instance prepender
+  configFile="$PREDIX_MACHINE_HOME/configuration/machine/com.ge.predix.workshop.nodeconfig.json"
+  __find_and_replace ":TAE" ":$(echo $INSTANCE_PREPENDER | tr 'a-z' 'A-Z')" "$configFile" "$quickstartLogDir"
+
+  if [[ $RUN_COMPILE_REPO -eq 1 ]]; then
+    ./scripts/deployPiDependencies.sh	
+  fi
+
   cd predix-scripts/bash
   ./scripts/buildMavenBundle.sh "$PREDIX_MACHINE_HOME"
 fi

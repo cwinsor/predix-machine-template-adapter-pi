@@ -46,7 +46,7 @@ while :; do
         ;;
 
         *) # unknown option
-          printf 'Unknown option (passed to lower scripts): %s\n' "$1" >&2
+          printf 'argument not used, is passed to lower scripts: %s\n' "$1" >&2
         ;;
     esac
     shift
