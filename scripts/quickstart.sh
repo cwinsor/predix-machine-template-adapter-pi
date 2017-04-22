@@ -83,7 +83,9 @@ rm -rf predix-machine-templates
 
 getRepoURL "predix-scripts" predix_scripts_url
 getRepoVersion "predix-scripts" predix_scripts_version
-__echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
+if [[ $NO_GIT_CLONE -eq 0 ]]; then
+  __echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
+fi
 
 __print_center "Creating Cloud Services" "#"
 
