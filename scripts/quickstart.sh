@@ -78,15 +78,36 @@ arguments="$*"
 echo "Arguments $arguments"
 echo "$CURRENT_DIR"
 
-rm -rf predix-scripts
-rm -rf predix-machine-templates
+if [[ $DO_GIT_CLONE ]]; then
+  rm -rf predix-scripts
+  rm -rf predix-machine-templates
+fi
 
 getRepoURL "predix-scripts" predix_scripts_url
 getRepoVersion "predix-scripts" predix_scripts_version
-if [[ $NO_GIT_CLONE -eq 0 ]]; then
-  __echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
+
+
+$FOO = 1
+if [[ $FOO ]]; then
+  echo "FOO=1 => yes"
+fi
+$FOO = 0
+if [[ $FOO ]]; then
+  echo "FOO=0 => yes"
 fi
 
+echo "DO_GIT_CLONE = $DO_GIT_CLONE"
+if [[ $DO_GIT_CLONE ]]; then
+  echo "DO_GIT_CLONE = yes"
+else
+  echo "DO_GIT_CLONE = no"
+fi
+
+
+
+if [[ $DO_GIT_CLONE ]]; then
+  __echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
+fi
 __print_center "Creating Cloud Services" "#"
 
 cd $CURRENT_DIR/predix-scripts
