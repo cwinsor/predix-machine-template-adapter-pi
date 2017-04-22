@@ -19,9 +19,9 @@ function __print_out_usage
   echo "[--foo]                               => foo mode"
 
 	echo -e "\n*** examples ***"
-	echo -e "./do_run_top --help"
-	echo -e "(all)                     ./do_run_top -i cwinsor-111 --mvn-package --install-frontend --create-services --machine-config"
 	echo -e "(just the front-end apps) ./do_run_top -i cwinsor-111 --mvn-package --install-frontend"
+	echo -e "(all)                     ./do_run_top -i cwinsor-111 --mvn-package --install-frontend --create-services --machine-config"
+	echo -e "(help)                    ./do_run_top --help"
 	echo -e "\n"
 }
 
