@@ -78,44 +78,24 @@ arguments="$*"
 echo "Arguments $arguments"
 echo "$CURRENT_DIR"
 
-if [[ $DO_GIT_CLONE -eq 1 ]]; then
+if [[ " ${arguments[@]} " =~ " --no-git-clone " ]]; then
+  echo "not cloning sub-projects"
+else
   rm -rf predix-scripts
   rm -rf predix-machine-templates
-fi
 
-getRepoURL "predix-scripts" predix_scripts_url
-getRepoVersion "predix-scripts" predix_scripts_version
-
-
-$FOO = 1
-if [[ $FOO ]]; then
-  echo "FOO=1 => yes"
-fi
-$FOO = 0
-if [[ $FOO ]]; then
-  echo "FOO=0 => yes"
-fi
-
-echo "DO_GIT_CLONE = $DO_GIT_CLONE"
-if [[ $DO_GIT_CLONE -eq 1 ]]; then
-  echo "DO_GIT_CLONE = yes"
-else
-  echo "DO_GIT_CLONE = no"
-fi
-
-
-
-if [[ $DO_GIT_CLONE -eq 1 ]]; then
+  getRepoURL "predix-scripts" predix_scripts_url
+  getRepoVersion "predix-scripts" predix_scripts_version
   __echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
 fi
-__print_center "Creating Cloud Services" "#"
 
 cd $CURRENT_DIR/predix-scripts
 source bash/readargs.sh
 source bash/scripts/files_helper_funcs.sh
 
-cd $CURRENT_DIR/predix-scripts/bash
+__print_center "Creating Cloud Services" "#"
 
+cd $CURRENT_DIR/predix-scripts/bash
 if type dos2unix >/dev/null; then
 find . -name "*.sh" -exec dos2unix -q {} \;
 fi
@@ -149,8 +129,10 @@ if [[ $RUN_COMPILE_REPO -eq 1 ]]; then
 	./scripts/deployPiDependencies.sh	
 fi
 
-cd predix-scripts/bash
-./scripts/buildMavenBundle.sh "$PREDIX_MACHINE_HOME"
+if [[ $RUN_MACHINE_CONFIG=1 ]]; then
+  cd predix-scripts/bash
+  ./scripts/buildMavenBundle.sh "$PREDIX_MACHINE_HOME"
+fi
 
 cd $CURRENT_DIR
 
