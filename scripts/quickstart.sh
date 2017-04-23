@@ -78,15 +78,18 @@ arguments="$*"
 echo "Arguments $arguments"
 echo "$CURRENT_DIR"
 
-if [[ " ${arguments[@]} " =~ " --no-git-clone " ]]; then
-  echo "not cloning sub-projects"
-else
+if [[ " ${arguments[@]} " =~ " --do-git-clone " ]]; then
+  echo "will clone sub-projects"
+
   rm -rf predix-scripts
   rm -rf predix-machine-templates
 
   getRepoURL "predix-scripts" predix_scripts_url
   getRepoVersion "predix-scripts" predix_scripts_version
   __echo_run git clone "$predix_scripts_url" -b $predix_scripts_version
+
+else
+  echo "will not clone sub-projects"
 fi
 
 cd $CURRENT_DIR/predix-scripts
