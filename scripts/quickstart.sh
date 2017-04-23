@@ -108,7 +108,11 @@ fi
 #fi
 __echo_run ./quickstart.sh $arguments
 
-if [[ $RUN_MACHINE_CONFIG=1 ]]; then
+echo "zona"
+echo  $RUN_MACHINE_CONFIG
+
+
+if [[ $RUN_MACHINE_CONFIG -eq 1 ]]; then
   source ./scripts/variables.sh
   
   echo "MACHINE_VERSION : $MACHINE_VERSION"

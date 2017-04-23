@@ -19,8 +19,8 @@ function __print_out_usage
   echo "[--foo]                               => foo mode"
 
 	echo -e "\n*** examples ***"
-	echo -e "(front-end apps, keep sub-projects)  ./do_run_top -i cwinsor-111 --mvn-package --install-frontend --no-git-clone"
-	echo -e "(front-end apps, clone sub-projects) ./do_run_top -i cwinsor-111 --mvn-package --install-frontend"
+	echo -e "(front-end apps, keep sub-projects)         ./do_run_top -i cwinsor-111 --mvn-package --install-frontend"
+	echo -e "(front-end apps, rm and clone sub-projects) ./do_run_top -i cwinsor-111 --mvn-package --install-frontend --do-git-clone"
 	echo -e "(front-end apps, services, pi image) ./do_run_top -i cwinsor-111 --mvn-package --install-frontend --no-git-clone --create-services --machine-config"
 	echo -e "(help)                    ./do_run_top --help"
 	echo -e "\n"
