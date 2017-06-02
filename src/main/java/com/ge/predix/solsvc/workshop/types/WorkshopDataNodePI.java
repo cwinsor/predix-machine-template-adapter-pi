@@ -14,8 +14,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.UUID;
 
+import org.iot.raspberry.grovepi.GroveDigitalIn;
 import org.iot.raspberry.grovepi.GroveDigitalOut;
 import org.iot.raspberry.grovepi.devices.GroveLed;
+import org.iot.raspberry.grovepi.devices.GroveRotarySensor;
 import org.iot.raspberry.grovepi.devices.GroveLightSensor;
 import org.iot.raspberry.grovepi.devices.GroveSoundSensor;
 import org.iot.raspberry.grovepi.pi4j.GrovePi4J;
@@ -29,15 +31,15 @@ import com.ge.dspmicro.machinegateway.types.PDataNode;
  */
 public class WorkshopDataNodePI extends PDataNode
 {
-	private GroveLightSensor lightNode;
-	
-	private GroveLightSensor tempNode; /* zona */
-	
-	private GroveSoundSensor soundNode;
+	private GroveRotarySensor sonarNode;
+
+	private GroveLed ledNode; 
+
+	private GroveDigitalIn buttonNode;
 	
 	private GroveDigitalOut buzzerNode;
-	
-	private GroveLed ledNode; 
+
+
 		
     private String nodeType;
     /**
@@ -52,17 +54,16 @@ public class WorkshopDataNodePI extends PDataNode
 		try {
 			GrovePi4J pi = new GrovePi4J();
 			switch (this.nodeType) {
-			case "Light": //$NON-NLS-1$
-				this.lightNode = new GroveLightSensor(pi, nodePin);
-				break;
-			case "Temperature": //$NON-NLS-1$
-				this.tempNode = new GroveLightSensor(pi, nodePin);
-				break;
-			case "Sound": //$NON-NLS-1$
-				this.soundNode = new GroveSoundSensor(pi, nodePin);
-				break;
-			default:
-				break;
+                        case "Sonar": //$NON-NLS-1$
+                            this.sonarNode = new GroveRotarySensor(pi,nodePin);
+                            this.ledNode = new GroveLed(pi,3);
+                            break;
+			case "Button": //$NON-NLS-1$
+                            this.buttonNode = new GroveDigitalIn(pi, nodePin);
+                            this.buzzerNode = new GroveDigitalOut(pi, 5);	
+                            break;
+                        default:
+                            break;
 			}
 		} catch (Exception e) {
 			throw new RuntimeException("Exception when building the nodes",e); //$NON-NLS-1$
@@ -100,47 +101,22 @@ public class WorkshopDataNodePI extends PDataNode
 		this.nodeType = nodeType;
 	}
 
-	/**
-	 * @return -
-	 */
-	public GroveLightSensor getLightNode() {
-		return this.lightNode;
-	}
 
-	/**
-	 * @param lightNode -
-	 */
-	public void setLightNode(GroveLightSensor lightNode) {
-		this.lightNode = lightNode;
-	}
 
 	/**
 	 * @return -
 	 */
-	public GroveLightSensor getTempNode() {
-		return this.tempNode;
+	public GroveRotarySensor getSonarNode() {
+		return this.sonarNode;
 	}
 
 	/**
-	 * @param tempNode -
+	 * @param -
 	 */
-	public void setTempNode(GroveLightSensor tempNode) {
-		this.tempNode = tempNode;
+	public void setSonarNode(GroveRotarySensor node) {
+		this.sonarNode = node;
 	}
 
-	/**
-	 * @return -
-	 */
-	public GroveDigitalOut getBuzzerNode() {
-		return this.buzzerNode;
-	}
-
-	/**
-	 * @param buzzerNode -
-	 */
-	public void setBuzzerNode(GroveDigitalOut buzzerNode) {
-		this.buzzerNode = buzzerNode;
-	}
 
 	/**
 	 * @return -
@@ -156,17 +132,39 @@ public class WorkshopDataNodePI extends PDataNode
 		this.ledNode = ledNode;
 	}
 
+
+
+
 	/**
 	 * @return -
 	 */
-	public GroveSoundSensor getSoundNode() {
-		return this.soundNode;
+	public GroveDigitalIn getButtonNode() {
+		return this.buttonNode;
 	}
 
 	/**
-	 * @param soundNode -
+	 * @param buttonNode -
 	 */
-	public void setSoundNode(GroveSoundSensor soundNode) {
-		this.soundNode = soundNode;
+	public void setButtonNode(GroveDigitalIn buttonNode) {
+		this.buttonNode = buttonNode;
 	}
+
+
+	/**
+	 * @return -
+	 */
+	public GroveDigitalOut getBuzzerNode() {
+		return this.buzzerNode;
+	}
+
+	/**
+	 * @param buzzerNode -
+	 */
+	public void setBuzzerNode(GroveDigitalOut buzzerNode) {
+		this.buzzerNode = buzzerNode;
+	}
+
+
+
+
 }

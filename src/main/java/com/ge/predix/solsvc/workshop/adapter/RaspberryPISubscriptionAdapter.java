@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.iot.raspberry.grovepi.devices.GroveLed;
 import org.osgi.service.component.ComponentContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -301,21 +302,29 @@ public class RaspberryPISubscriptionAdapter
 		for (int try_num = 1;; try_num++) {
 			try {
 				switch (node.getNodeType()) {
-				case "Light": //$NON-NLS-1$
-					fvalue = node.getLightNode().get();
-				break;
-				case "Temperature": //$NON-NLS-1$
-					fvalue = node.getTempNode().get();
-					break;
-				case "Sound": //$NON-NLS-1$
-					fvalue = node.getSoundNode().get();
-					break;
-				default:
-					break;
+				case "Sonar": //$NON-NLS-1$
+                                    double sensorValue = node.getSonarNode().get().getSensorValue();
+                                    double calculatedValue = Math.round((sensorValue) * ADC_REF / 512);
+                                    
+                                    fvalue = new Double(df.format(calculatedValue));
+                                    GroveLed ledPin = node.getLedNode();
+                                    if (calculatedValue < 12.0) {
+                                        ledPin.set(true);
+                                    }else {
+                                        ledPin.set(false);
+                                    }
+                                    break;
+				case "Button": //$NON-NLS-1$
+                                    boolean value = node.getButtonNode().get();
+                                    fvalue = value ? 1.0 : 0.0;
+                                    node.getBuzzerNode().set(value);
+                                    break;
+                                default:
+                                    break;
 				}
 				break;
 			} catch (Exception e) {
-				System.out.printf("Exception when reading data from sensor node"); //$NON-NLS-1$
+				System.out.printf("Exception when reading data from node %s", e); //$NON-NLS-1$
 				System.out.println(e.getMessage());
 				System.out.printf("(will retry)\n");
 				System.out.printf("%d\n", try_num);
@@ -324,7 +333,7 @@ public class RaspberryPISubscriptionAdapter
 				System.out.printf("-----\n");
 
 				if (try_num >= 3) {
-					throw new RuntimeException("Exception when reading data from the sensor node %s", e); //$NON-NLS-1$
+					throw new RuntimeException("Exception when reading data from node %s", e); //$NON-NLS-1$
 				}
 			}
 		}
