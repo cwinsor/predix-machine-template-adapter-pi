@@ -33,11 +33,11 @@ public class WorkshopDataNodePI extends PDataNode
 {
 	private GroveRotarySensor sonarNode;
 
-	private GroveLed ledNode; 
+//zona	private GroveLed ledNode; 
 
 	private GroveDigitalIn buttonNode;
 	
-	private GroveDigitalOut buzzerNode;
+//zona	private GroveDigitalOut buzzerNode;
 
 
 		
@@ -56,11 +56,11 @@ public class WorkshopDataNodePI extends PDataNode
 			switch (this.nodeType) {
                         case "Sonar": //$NON-NLS-1$
                             this.sonarNode = new GroveRotarySensor(pi,nodePin);
-                            this.ledNode = new GroveLed(pi,3);
+//zona                            this.ledNode = new GroveLed(pi,3);
                             break;
 			case "Button": //$NON-NLS-1$
                             this.buttonNode = new GroveDigitalIn(pi, nodePin);
-                            this.buzzerNode = new GroveDigitalOut(pi, 5);	
+//zona                            this.buzzerNode = new GroveDigitalOut(pi, 5);	
                             break;
                         default:
                             break;
@@ -121,16 +121,16 @@ public class WorkshopDataNodePI extends PDataNode
 	/**
 	 * @return -
 	 */
-	public GroveLed getLedNode() {
-		return this.ledNode;
-	}
+//zona	public GroveLed getLedNode() {
+//		return this.ledNode;
+//	}
 
 	/**
 	 * @param ledNode -
 	 */
-	public void setLedNode(GroveLed ledNode) {
-		this.ledNode = ledNode;
-	}
+//zona	public void setLedNode(GroveLed ledNode) {
+//		this.ledNode = ledNode;
+//	}
 
 
 
@@ -149,20 +149,21 @@ public class WorkshopDataNodePI extends PDataNode
 		this.buttonNode = buttonNode;
 	}
 
+        
 
 	/**
 	 * @return -
 	 */
-	public GroveDigitalOut getBuzzerNode() {
-		return this.buzzerNode;
-	}
+//	public GroveDigitalOut getBuzzerNode() {
+//		return this.buzzerNode;
+//	}
 
 	/**
 	 * @param buzzerNode -
 	 */
-	public void setBuzzerNode(GroveDigitalOut buzzerNode) {
-		this.buzzerNode = buzzerNode;
-	}
+//	public void setBuzzerNode(GroveDigitalOut buzzerNode) {
+//		this.buzzerNode = buzzerNode;
+//	}
 
 
 

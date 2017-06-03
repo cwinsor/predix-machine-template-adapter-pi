@@ -305,19 +305,27 @@ public class RaspberryPISubscriptionAdapter
 				case "Sonar": //$NON-NLS-1$
                                     double sensorValue = node.getSonarNode().get().getSensorValue();
                                     double calculatedValue = Math.round((sensorValue) * ADC_REF / 512);
-                                    
+                                
                                     fvalue = new Double(df.format(calculatedValue));
-                                    GroveLed ledPin = node.getLedNode();
-                                    if (calculatedValue < 12.0) {
-                                        ledPin.set(true);
-                                    }else {
-                                        ledPin.set(false);
-                                    }
+                                    System.out.printf("zona - sonar sensorValue=%f calculatedValue=%f fvalue=%f\n",
+                                            sensorValue,
+                                            calculatedValue,
+                                            fvalue);
+                                                                        
+ //zona                                   GroveLed ledPin = node.getLedNode();
+ //                                   if (calculatedValue < 12.0) {
+ //                                       ledPin.set(true);
+ //                                   }else {
+ //                                       ledPin.set(false);
+ //                                   }
                                     break;
 				case "Button": //$NON-NLS-1$
                                     boolean value = node.getButtonNode().get();
                                     fvalue = value ? 1.0 : 0.0;
-                                    node.getBuzzerNode().set(value);
+                                    System.out.printf("zona - button value=%d fvalue=%f\n",
+                                            value,
+                                            fvalue);
+//zona                                    node.getBuzzerNode().set(value);
                                     break;
                                 default:
                                     break;
